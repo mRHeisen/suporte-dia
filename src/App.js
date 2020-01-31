@@ -1,4 +1,5 @@
 import React from 'react';
+import { filter } from 'lodash';
 import logo from './sup.png';
 import moment from 'moment';
 import './App.css';
@@ -11,6 +12,7 @@ function App() {
     var end = moment().add(1, 'year');
     var array = [];
     var aux = 0
+    console.log(data.format('DD/MM/YYYY'))
     while (date < end) {
       if(!ignoreDays.has(date.format('dddd'))) {
         array.push({dia: date.format('DD/MM/YYYY'), sup: aux < 2 ? 'S' : 'M'});
@@ -19,16 +21,14 @@ function App() {
       if(aux === 4) aux= 0
       date.add(1, 'days')
     }
-    array.map(a => {
-      if (a.dia === data.format('DD/MM/YYYY')) return a.sup;
-    });
-    console.log(array)
+    const nome = filter(array, {dia: data.format('DD/MM/YYYY')})
+    return nome[0]
   }
   return (
     <div className="App">
       <div className="jumbotron">
         <img alt='suporte' src={logo} width="400" height="400" />
-        <h1 className="display-4">{nome(moment()) === 'M' ? 'Dia do Mauricio !' : 'Dia do Stefano !'}</h1>
+        <h1 className="display-4">{nome(moment()).sup === 'M' ? 'Dia do Mauricio !' : 'Dia do Stefano !'}</h1>
       </div>
     </div>
   );
